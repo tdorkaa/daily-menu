@@ -2,19 +2,20 @@
 
 namespace DailyMenu;
 
+use DailyMenu\Controllers\HealthCheck;
 use Slim\App;
-use Slim\Http\Request;
-use Slim\Http\Response;
 
 class AppBuilder
 {
     public static function build()
     {
         $app = new App;
-        $app->get('/healthcheck', function (Request $request, Response $response, array $args) {
-            $response->getBody()->write("OK");
-            return $response;
-        });
+        self::setUpRoutes($app);
         return $app;
+    }
+
+    private static function setUpRoutes($app)
+    {
+        $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
     }
 }
