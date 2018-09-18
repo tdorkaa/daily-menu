@@ -1,87 +1,62 @@
 <?php
 
-namespace tests;
+namespace Tests\Dao;
 
 use DailyMenu\Dao\DailyMenu;
-use DailyMenu\PdoFactory;
 use PHPUnit\Framework\TestCase;
+use Tests\DbHelper;
 
 class DailyMenuTest extends TestCase
 {
+    use DbHelper;
+
+    protected function setUp()
+    {
+        $this->setUpPdo();
+        $this->truncate('restaurants');
+        $this->truncate('menus');
+    }
+
     /**
      * @test
      */
     public function getDailyMenu_GivenDate_ReturnsMenusOfDate()
     {
-        $pdo = (new PdoFactory())->getPdo();
-        $pdo->query('TRUNCATE TABLE restaurants');
-        $pdo->query('TRUNCATE TABLE menus');
-        $restaurant = [
-            'id' => 1,
-            'name' => 'Fiction Stars',
-        ];
-        $this->createRestaurantInDb($restaurant);
-
-        $menu = [
-            'id' => 1,
-            'restaurant_id' => 1,
-            'menu' => 'Leves, Fozelek',
-            'date' => '2018-09-22'
-        ];
-        $this->createMenuInDb($menu);
+        $this->insertRestaurants([self::aRestaurant()]);
+        $this->insertMenus([self::aMenu()]);
 
         $expectedDailyMenu = [
             'id' => '1',
             'restaurant_id' => '1',
-            'restaurant' => 'Fiction Stars',
-            'menu' => 'Leves, Fozelek',
+            'restaurant' => 'Fiction Stars1',
+            'menu' => 'Leves, Fozelek1',
             'date' => '2018-09-22'
         ];
 
-        $pdo = (new PdoFactory())->getPdo();
 
-        $dao = new DailyMenu($pdo);
+        $dao = new DailyMenu($this->pdo);
 
         $actualDailyMenu = $dao->getDailyMenu('2018-09-22');
 
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }
 
-    /**
-     * @param $menu
-     */
-    private function createMenuInDb($menu): void
+    private static function aRestaurant($restaurantId = 1)
     {
-        $pdo = (new PdoFactory())->getPdo();
-        $sql = "
-        INSERT INTO menus (
-          id, 
-          restaurant_id, 
-          menu, 
-          `date`
-        )
-        VALUES (
-            {$menu['id']}, 
-            '{$menu['restaurant_id']}', 
-            '{$menu['menu']}', 
-            '{$menu['date']}'
-        )
-        ";
-
-        $pdo->exec($sql);
+        return [
+            'id' => $restaurantId,
+            'name' => 'Fiction Stars' . $restaurantId,
+        ];
     }
 
-    /**
-     * @param $restaurant
-     */
-    private function createRestaurantInDb($restaurant): void
+    private static function aMenu($id = 1, $restaurantId = 1, $date = '2018-09-22')
     {
-        $pdo = (new PdoFactory())->getPdo();
-
-        $sql = "
-        INSERT INTO restaurants (id, name)
-        VALUES ({$restaurant['id']}, '{$restaurant['name']}')
-        ";
-        $pdo->exec($sql);
+        return [
+            'id' => $id,
+            'restaurant_id' => $restaurantId,
+            'menu' => 'Leves, Fozelek' . $id,
+            'date' => $date
+        ];
     }
+
 }
