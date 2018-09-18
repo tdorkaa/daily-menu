@@ -29,4 +29,24 @@ class DailyMenu
         ]);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function insertDailyMenu($restaurantId, $menu, $date)
+    {
+        $this->pdo->prepare('
+           INSERT INTO menus (
+                restaurant_id, 
+                menu, 
+                `date`
+           )
+           VALUES (
+                :restaurant_id, 
+                :menu, 
+                :date
+           )
+        ')->execute(array(
+            ':restaurant_id' => $restaurantId,
+            ':menu' => $menu,
+            ':date' => $date
+        ));
+    }
 }

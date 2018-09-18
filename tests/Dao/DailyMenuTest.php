@@ -68,6 +68,30 @@ class DailyMenuTest extends TestCase
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }
 
+    /**
+     * @test
+     */
+    public function insertDailyMenu_GivenRestaurantAlreadyExists_DbContainsInsertedMenu()
+    {
+        $this->insertRestaurants([self::aRestaurant()]);
+
+        $expectedDailyMenu = [
+            [
+                'id' => '1',
+                'restaurant_id' => '1',
+                'restaurant' => 'Fiction Stars1',
+                'menu' => 'Leves, Fozelek1',
+                'date' => '2018-09-22'
+            ]
+        ];
+        $this->dao->insertDailyMenu(1, 'Leves, Fozelek1', '2018-09-22');
+        $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
+
+        $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
+    }
+
+
+
     private static function aRestaurant($restaurantId = 1)
     {
         return [
