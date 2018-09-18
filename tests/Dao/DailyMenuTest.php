@@ -10,11 +10,14 @@ class DailyMenuTest extends TestCase
 {
     use DbHelper;
 
+    private $dao;
+
     protected function setUp()
     {
         $this->setUpPdo();
         $this->truncate('restaurants');
         $this->truncate('menus');
+        $this->dao = new DailyMenu($this->pdo);
     }
 
     /**
@@ -25,18 +28,42 @@ class DailyMenuTest extends TestCase
         $this->insertRestaurants([self::aRestaurant()]);
         $this->insertMenus([self::aMenu()]);
 
-        $expectedDailyMenu = [
+        $expectedDailyMenu = [[
             'id' => '1',
             'restaurant_id' => '1',
             'restaurant' => 'Fiction Stars1',
             'menu' => 'Leves, Fozelek1',
             'date' => '2018-09-22'
-        ];
+        ]];
 
+        $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
 
-        $dao = new DailyMenu($this->pdo);
+        $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
+    }
 
-        $actualDailyMenu = $dao->getDailyMenu('2018-09-22');
+    /**
+     * @test
+     */
+    public function getDailyMenu_DbContainsMenusWithDifferentDates_ReturnsMenusOfDate()
+    {
+        $this->insertRestaurants([self::aRestaurant()]);
+        $this->insertMenus([self::aMenu(), self::aMenu(2, 1, '2018-09-22'), self::aMenu(3, 1, '2018-09-21')]);
+
+        $expectedDailyMenu = [[
+            'id' => '1',
+            'restaurant_id' => '1',
+            'restaurant' => 'Fiction Stars1',
+            'menu' => 'Leves, Fozelek1',
+            'date' => '2018-09-22'
+        ], [
+            'id' => '2',
+            'restaurant_id' => '1',
+            'restaurant' => 'Fiction Stars1',
+            'menu' => 'Leves, Fozelek2',
+            'date' => '2018-09-22'
+        ]];
+
+        $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
 
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }

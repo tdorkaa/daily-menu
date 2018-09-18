@@ -26,7 +26,7 @@ class AppBuilder
     private static function setUpDb($container)
     {
         $container['pdo'] = function () {
-            return new PDO("mysql:host=mysql;charset=utf8mb4", 'academy', 'academy', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
+            return (new PdoFactory())->getPdo();
         };
         return $container;
     }

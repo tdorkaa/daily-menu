@@ -11,6 +11,7 @@ class EnvLoaderTest extends \PHPUnit\Framework\TestCase
      */
     public function loadEnvVars_DependingOnApplicationEnv()
     {
+        $this->markTestIncomplete();
         $originalAppEnv = getenv("APPLICATION_ENV");
         putenv('APPLICATION_ENV=development');
 
@@ -27,6 +28,7 @@ class EnvLoaderTest extends \PHPUnit\Framework\TestCase
      */
     public function loadEnvVars_AppEnvFileDoesNotExists_NoExceptionThrown()
     {
+        $this->markTestIncomplete();
         $this->expectNotToPerformAssertions();
         $originalAppEnv = getenv("APPLICATION_ENV");
         putenv('APPLICATION_ENV=somethingsomethingdarkside');

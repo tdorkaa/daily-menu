@@ -27,6 +27,6 @@ class DailyMenu
         $statement->execute([
             'date' => $date
         ]);
-        return $statement->fetch(\PDO::FETCH_ASSOC);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
