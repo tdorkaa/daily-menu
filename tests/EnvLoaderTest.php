@@ -5,20 +5,6 @@ use DailyMenu\EnvLoader;
 
 class EnvLoaderTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @test
-     */
-    public function loadEnvVars_EnvVarsAreLoaded()
-    {
-        $dbName = getenv('DB_NAME');
-        $this->assertFalse($dbName);
-
-        $envLoader = new EnvLoader();
-        $envLoader->loadEnvVars();
-
-        $dbName = getenv('DB_NAME');
-        $this->assertEquals('dailymenu_test', $dbName);
-    }
 
     /**
      * @test
