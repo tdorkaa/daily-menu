@@ -51,4 +51,21 @@ trait DbHelper
         }
     }
 
+    private static function aRestaurant($restaurantId = 1)
+    {
+        return [
+            'id' => $restaurantId,
+            'name' => 'Fiction Stars' . $restaurantId,
+        ];
+    }
+
+    private static function aMenu($id = 1, $restaurantId = 1, $date = '2018-09-22')
+    {
+        return [
+            'id' => $id,
+            'restaurant_id' => $restaurantId,
+            'menu' => 'Leves, Fozelek' . $id,
+            'date' => $date
+        ];
+    }
 }

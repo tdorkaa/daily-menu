@@ -9,7 +9,7 @@ use Slim\Http\Response;
 
 trait Webtestcase {
 
-    public function processRequest($method, $url, $responseBody = null)
+    public function processRequest($method, $url, $requestBody = null)
     {
         $app = AppBuilder::build();
         $request = Request::createFromEnvironment(
@@ -18,8 +18,8 @@ trait Webtestcase {
                 'REQUEST_URI' => $url
             ])
         );
-        if ($responseBody) {
-            $request = $request->withParsedBody($responseBody);
+        if ($requestBody) {
+            $request = $request->withParsedBody($requestBody);
         }
 
         return $app->process($request, new Response());

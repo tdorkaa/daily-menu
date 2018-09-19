@@ -25,8 +25,8 @@ class DailyMenuTest extends TestCase
      */
     public function getDailyMenu_GivenDate_ReturnsMenusOfDate()
     {
-        $this->insertRestaurants([self::aRestaurant()]);
-        $this->insertMenus([self::aMenu()]);
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertMenus([$this->aMenu()]);
 
         $expectedDailyMenu = [[
             'id' => '1',
@@ -46,8 +46,8 @@ class DailyMenuTest extends TestCase
      */
     public function getDailyMenu_DbContainsMenusWithDifferentDates_ReturnsMenusOfDate()
     {
-        $this->insertRestaurants([self::aRestaurant()]);
-        $this->insertMenus([self::aMenu(), self::aMenu(2, 1, '2018-09-22'), self::aMenu(3, 1, '2018-09-21')]);
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertMenus([$this->aMenu(), $this->aMenu(2, 1, '2018-09-22'), $this->aMenu(3, 1, '2018-09-21')]);
 
         $expectedDailyMenu = [[
             'id' => '1',
@@ -73,7 +73,7 @@ class DailyMenuTest extends TestCase
      */
     public function insertDailyMenu_GivenRestaurantAlreadyExists_DbContainsInsertedMenu()
     {
-        $this->insertRestaurants([self::aRestaurant()]);
+        $this->insertRestaurants([$this->aRestaurant()]);
 
         $expectedDailyMenu = [
             [
@@ -88,26 +88,6 @@ class DailyMenuTest extends TestCase
         $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
 
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
-    }
-
-
-
-    private static function aRestaurant($restaurantId = 1)
-    {
-        return [
-            'id' => $restaurantId,
-            'name' => 'Fiction Stars' . $restaurantId,
-        ];
-    }
-
-    private static function aMenu($id = 1, $restaurantId = 1, $date = '2018-09-22')
-    {
-        return [
-            'id' => $id,
-            'restaurant_id' => $restaurantId,
-            'menu' => 'Leves, Fozelek' . $id,
-            'date' => $date
-        ];
     }
 
 }
