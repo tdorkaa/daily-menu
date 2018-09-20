@@ -93,4 +93,15 @@ class DailyMenuTest extends TestCase
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }
 
+    /**
+     * @test
+     */
+    public function isDailyMenuByRestaurantIdExists_GivenDailyMenuAlreadyInserted_ReturnsTrue()
+    {
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertMenus([$this->aMenu(1,1, date('Y-m-d'))]);
+        $actual = $this->dao->isDailyMenuByRestaurantIdExists(1);
+        $this->assertTrue($actual);
+    }
+
 }

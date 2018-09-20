@@ -49,4 +49,20 @@ class DailyMenu
             ':date' => $date
         ));
     }
+
+    public function isDailyMenuByRestaurantIdExists($id): bool
+    {
+        $date = date('Y-m-d');
+        $sql = "
+            SELECT id
+            FROM menus
+            WHERE date=:date AND id=:restaurant_id
+        ";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'date' => $date,
+            'restaurant_id' => $id
+        ]);
+        return (count($statement->fetchAll(\PDO::FETCH_ASSOC)) > 0);
+    }
 }

@@ -16,11 +16,17 @@ class DailyMenuTest extends TestCase
     use DbHelper;
     use MockHtmlParser;
 
+    private $dateOfToday;
+    private $dailyMenuJob;
+
     protected function setUp()
     {
         $this->setUpPdo();
         $this->truncate('restaurants');
         $this->truncate('menus');
+        $this->dateOfToday = date('Y-m-d');
+        $this->dailyMenuJob = new DailyMenu(new VendiakParser($this->getMockHtmlParser()),
+                                            new DailyMenuDao((new PdoFactory())->getPdo()));
     }
 
     /**
@@ -29,18 +35,29 @@ class DailyMenuTest extends TestCase
     public function run_GivenVendiakParserGivesBackSourceCode_DailyMenuIsInsertedToDB()
     {
         $this->insertRestaurants([$this->aRestaurant()]);
-        $dailyMenuJob = new DailyMenu(new VendiakParser($this->getMockHtmlParser()),
-                                      new DailyMenuDao((new PdoFactory())->getPdo()));
-        $dailyMenuJob->run();
+        $this->dailyMenuJob->run();
 
-        $dateOfToday = date('Y-m-d');
         $expectedDailyMenu = [
             'id' => 1,
             'restaurant_id' => 1,
             'menu' => 'Házi tea, Zöldségkrémleves, Milánói sertésborda',
-            'date' => $dateOfToday
+            'date' => $this->dateOfToday
         ];
-        $actualDailyMenu = $this->getDailyMenuFromMenuTable($dateOfToday);
+        $actualDailyMenu = $this->getDailyMenuFromMenuTable($this->dateOfToday);
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function run_GivenVendiakDailyMenuIsAlreadySaved_DoesNotInsertItAgain()
+    {
+        self::markTestIncomplete();
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertMenus([$this->aMenu(1, 1, $this->dateOfToday)]);
+        $this->dailyMenuJob->run();
+        $dateOfToday = date('Y-m-d');
+        $actualDailyMenu = $this->getDailyMenuFromMenuTable($dateOfToday);
+        $this->assertEquals(1, count($actualDailyMenu));
     }
 }
