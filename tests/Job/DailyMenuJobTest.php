@@ -9,10 +9,12 @@ use DailyMenu\PdoFactory;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelper;
+use Tests\MockHtmlParser;
 
 class DailyMenuTest extends TestCase
 {
     use DbHelper;
+    use MockHtmlParser;
 
     protected function setUp()
     {
@@ -27,22 +29,8 @@ class DailyMenuTest extends TestCase
     public function run_GivenVendiakParserGivesBackSourceCode_DailyMenuIsInsertedToDB()
     {
         $this->insertRestaurants([$this->aRestaurant()]);
-
-        $mockHTMLParser = $this->getMockBuilder(Dom::class)
-            ->setMethods(['load'])
-            ->getMock();
-
-        $mockHTMLParser
-            ->expects($this->once())
-            ->method('load')
-            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
-
-        $mockHTMLParser->loadStr(
-            file_get_contents(__DIR__ . '/../Parser/HtmlContent/Vendiak.html'),
-            ['preserveLineBreaks' => true]
-        );
-
-        $dailyMenuJob = new DailyMenu(new VendiakParser($mockHTMLParser), new DailyMenuDao((new PdoFactory())->getPdo()));
+        $dailyMenuJob = new DailyMenu(new VendiakParser($this->getMockHtmlParser()),
+                                      new DailyMenuDao((new PdoFactory())->getPdo()));
         $dailyMenuJob->run();
 
         $dateOfToday = date('Y-m-d');

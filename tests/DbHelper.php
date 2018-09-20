@@ -6,6 +6,9 @@ use DailyMenu\PdoFactory;
 
 trait DbHelper
 {
+    /**
+     * @var \PDO
+     */
     private $pdo;
 
     private function setUpPdo()

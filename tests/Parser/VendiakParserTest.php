@@ -5,31 +5,18 @@ namespace Tests\Parser;
 use DailyMenu\Parser\VendiakParser;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
+use Tests\MockHtmlParser;
 
 class VendiakParserTest extends TestCase
 {
+    use MockHtmlParser;
 
     /**
      * @test
      */
     public function parser_GivenLoadedHtmlSource_returnsDailyMenu()
     {
-        $mockHTMLParser = $this->getMockBuilder(Dom::class)
-            ->setMethods(['load'])
-            ->getMock();
-
-        $mockHTMLParser
-            ->expects($this->once())
-            ->method('load')
-            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
-
-        $mockHTMLParser->loadStr(
-            file_get_contents(__DIR__ . '/HtmlContent/Vendiak.html'),
-            ['preserveLineBreaks' => true]
-        );
-
-
-        $vediakParser = new VendiakParser($mockHTMLParser);
+        $vediakParser = new VendiakParser($this->getMockHtmlParser());
         $dailyMenu = $vediakParser->getDailyMenu();
         $this->assertEquals(['Házi tea', 'Zöldségkrémleves',
             'Milánói sertésborda'], $dailyMenu);
