@@ -10,6 +10,9 @@ class DailyMenuTest extends TestCase
 {
     use DbHelper;
 
+    /**
+     * @var DailyMenu
+     */
     private $dao;
 
     protected function setUp()
