@@ -51,6 +51,20 @@ trait DbHelper
         }
     }
 
+    private function getDailyMenuFromMenuTable($date)
+    {
+        $sql = "
+            SELECT id, restaurant_id, menu, `date`
+            FROM menus
+            WHERE date=:date
+        ";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'date' => $date
+        ]);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     private static function aRestaurant($restaurantId = 1)
     {
         return [
