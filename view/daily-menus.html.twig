@@ -1,0 +1,7 @@
+<div>Daily Menu</div>
+<ul>
+    {% for dailymenu in dailymenus %}
+        <li>{{ dailymenu.restaurant }}</li>
+        <li>{{ dailymenu.menu }}</li>
+    {% endfor %}
+</ul>
