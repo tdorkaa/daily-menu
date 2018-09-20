@@ -30,7 +30,7 @@ class DailyMenu
         $today = date('Y-m-d');
         return $this->twig->render($response, 'daily-menus.html.twig',
             [
-                'dailymenus' => $this->dailyMenuDao->getDailyMenu($today)
+                'dailymenus' => $this->dailyMenuDao->getDailyMenus($today)
             ]
         );
     }

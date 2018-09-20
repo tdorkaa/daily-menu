@@ -14,7 +14,7 @@ class DailyMenu
         $this->pdo = $pdo;
     }
 
-    public function getDailyMenu(string $date)
+    public function getDailyMenus(string $date)
     {
         $sql = "
             SELECT menus.id, menus.restaurant_id, restaurants.name restaurant, menus.menu, menus.date

@@ -39,7 +39,7 @@ class DailyMenuTest extends TestCase
             'date' => '2018-09-22'
         ]];
 
-        $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
+        $actualDailyMenu = $this->dao->getDailyMenus('2018-09-22');
 
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }
@@ -66,7 +66,7 @@ class DailyMenuTest extends TestCase
             'date' => '2018-09-22'
         ]];
 
-        $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
+        $actualDailyMenu = $this->dao->getDailyMenus('2018-09-22');
 
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }
@@ -88,7 +88,7 @@ class DailyMenuTest extends TestCase
             ]
         ];
         $this->dao->insertDailyMenu(1, 'Leves, Fozelek1', '2018-09-22');
-        $actualDailyMenu = $this->dao->getDailyMenu('2018-09-22');
+        $actualDailyMenu = $this->dao->getDailyMenus('2018-09-22');
 
         $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
     }
