@@ -22,6 +22,19 @@ class DailyMenuTest extends TestCase
      */
     public function getDailyMenus_DbContainsDailyMenus_Returns200AndDailyMenus()
     {
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertMenus([$this->aMenu(1,1, date('Y-m-d'))]);
+        $response = $this->processRequest('GET', '/dailymenus' );
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertContains('Fiction Stars1', (string)$response->getBody());
+        $this->assertContains('Leves, Fozelek1', (string)$response->getBody());
+    }
+
+    /**
+     * @test
+     */
+    public function getMenusByRestaurant_Given_Returns200AndDailyMenus()
+    {
         $menu = $this->aMenu(1,1, date('Y-m-d'));
         $this->insertRestaurants([$this->aRestaurant()]);
         $this->insertMenus([$menu]);

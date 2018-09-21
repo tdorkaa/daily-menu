@@ -7,22 +7,11 @@ class MenusConverter
 
     public function convert(array $menuDao)
     {
-        $firstConvention = $this->makeArraysByRestaurantId($menuDao);
-        $convertedDao = $this->convertMenus($firstConvention);
-        return $convertedDao;
+        $twoDimensionalArrayByRestaurantID = $this->makeTwoDimensionalArrayByRestaurantId($menuDao);
+        return $this->convertMenus($twoDimensionalArrayByRestaurantID);
     }
 
-    private function makeListOfDateAndMenu($menuDao): array
-    {
-        $menus = [];
-        foreach ($menuDao as $index => $menu) {
-            $menus[$index]['date'] = $menu['date'];
-            $menus[$index]['menu'] = $menu['menu'];
-        }
-        return $menus;
-    }
-
-    private function makeArraysByRestaurantId($menuDao)
+    private function makeTwoDimensionalArrayByRestaurantId($menuDao)
     {
         $menus = [];
         $indexOfOuterArray = 0;
@@ -43,7 +32,17 @@ class MenusConverter
         foreach ($menuDao as $index => $menu) {
             $menus[$index]['restaurant_id'] = $menu[0]['restaurant_id'];
             $menus[$index]['restaurant'] = $menu[0]['restaurant'];
-            $menus[$index]['menus'] = $this->makeListOfDateAndMenu($menu);
+            $menus[$index]['menus'] = $this->makeListOfDateAndMenuByRestaurant($menu);
+        }
+        return $menus;
+    }
+
+    private function makeListOfDateAndMenuByRestaurant($menuDao): array
+    {
+        $menus = [];
+        foreach ($menuDao as $index => $menu) {
+            $menus[$index]['date'] = $menu['date'];
+            $menus[$index]['menu'] = $menu['menu'];
         }
         return $menus;
     }
