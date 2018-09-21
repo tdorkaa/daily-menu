@@ -66,7 +66,7 @@ class DailyMenu
         return (count($statement->fetchAll(\PDO::FETCH_ASSOC)) > 0);
     }
 
-    public function getMenusByDate(string $date1, string $date2)
+    public function getMenusByDateOrderByRestaurantId(string $date1, string $date2)
     {
         $sql = "
             SELECT menus.id, menus.restaurant_id, restaurants.name restaurant, menus.menu, menus.date
@@ -74,7 +74,7 @@ class DailyMenu
             INNER JOIN restaurants restaurants
             ON menus.restaurant_id = restaurants.id 
             WHERE menus.date between :date1 and :date2
-            ORDER BY menus.date DESC
+            ORDER BY menus.restaurant_id
         ";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([

@@ -107,12 +107,13 @@ class DailyMenuTest extends TestCase
     /**
      * @test
      */
-    public function getMenusByDate_GivenRestaurantId_ReturnsMenus()
+    public function getMenusByDateOrderByRestaurantId_GivenPeriodOfTime_ReturnsMenusOrderByRestaurantId()
     {
         $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertRestaurants([$this->aRestaurant(2)]);
         $this->insertMenus([$this->aMenu()]);
         $this->insertMenus([$this->aMenu(2,1, date('2018-09-11'))]);
-        $this->insertMenus([$this->aMenu(3,1, date('2018-09-12'))]);
+        $this->insertMenus([$this->aMenu(3,2, date('2018-09-12'))]);
         $this->insertMenus([$this->aMenu(4,1, date('2018-09-10'))]);
         $expected = [
             [
@@ -123,21 +124,21 @@ class DailyMenuTest extends TestCase
                 'date' => '2018-09-22'
             ],
             [
-                'id' => '3',
-                'restaurant_id' => '1',
-                'restaurant' => 'Fiction Stars1',
-                'menu' => 'Leves, Fozelek3',
-                'date' => '2018-09-12'
-            ],
-            [
                 'id' => '2',
                 'restaurant_id' => '1',
                 'restaurant' => 'Fiction Stars1',
                 'menu' => 'Leves, Fozelek2',
                 'date' => '2018-09-11'
+            ],
+            [
+                'id' => '3',
+                'restaurant_id' => '2',
+                'restaurant' => 'Fiction Stars2',
+                'menu' => 'Leves, Fozelek3',
+                'date' => '2018-09-12'
             ]
         ];
-        $actual = $this->dao->getMenusByDate('2018-09-11', '2018-09-22');
+        $actual = $this->dao->getMenusByDateOrderByRestaurantId('2018-09-11', '2018-09-22');
         $this->assertEquals($expected, $actual);
     }
 }
