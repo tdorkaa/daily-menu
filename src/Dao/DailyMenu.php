@@ -54,9 +54,9 @@ class DailyMenu
     {
         $date = date('Y-m-d');
         $sql = "
-            SELECT id
+            SELECT restaurant_id
             FROM menus
-            WHERE date=:date AND id=:restaurant_id
+            WHERE date=:date AND restaurant_id=:restaurant_id
         ";
         $statement = $this->pdo->prepare($sql);
         $statement->execute([
