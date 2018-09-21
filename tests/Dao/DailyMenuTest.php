@@ -104,4 +104,40 @@ class DailyMenuTest extends TestCase
         $this->assertTrue($actual);
     }
 
+    /**
+     * @test
+     */
+    public function getMenusByRestaurantId_GivenRestaurantId_ReturnsMenus()
+    {
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertMenus([$this->aMenu()]);
+        $this->insertMenus([$this->aMenu(2,1, date('2018-09-11'))]);
+        $this->insertMenus([$this->aMenu(3,1, date('2018-09-12'))]);
+        $expected = [
+            [
+                'id' => '1',
+                'restaurant_id' => '1',
+                'restaurant' => 'Fiction Stars1',
+                'menu' => 'Leves, Fozelek1',
+                'date' => '2018-09-22'
+            ],
+            [
+                'id' => '2',
+                'restaurant_id' => '1',
+                'restaurant' => 'Fiction Stars1',
+                'menu' => 'Leves, Fozelek2',
+                'date' => '2018-09-11'
+            ],
+            [
+                'id' => '3',
+                'restaurant_id' => '1',
+                'restaurant' => 'Fiction Stars1',
+                'menu' => 'Leves, Fozelek3',
+                'date' => '2018-09-12'
+            ],
+        ];
+        $actual = $this->dao->getMenusByRestaurantId(1);
+        $this->assertEquals($expected, $actual);
+    }
+
 }

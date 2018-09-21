@@ -65,4 +65,20 @@ class DailyMenu
         ]);
         return (count($statement->fetchAll(\PDO::FETCH_ASSOC)) > 0);
     }
+
+    public function getMenusByRestaurantId(int $restaurantId)
+    {
+        $sql = "
+            SELECT menus.id, menus.restaurant_id, restaurants.name restaurant, menus.menu, menus.date
+            FROM menus menus
+            INNER JOIN restaurants restaurants
+            ON menus.restaurant_id = restaurants.id 
+            WHERE menus.restaurant_id=:restaurant_id
+        ";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'restaurant_id' => $restaurantId
+        ]);
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }
