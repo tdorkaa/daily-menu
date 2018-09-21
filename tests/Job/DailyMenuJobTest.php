@@ -25,8 +25,6 @@ class DailyMenuTest extends TestCase
         $this->truncate('restaurants');
         $this->truncate('menus');
         $this->dateOfToday = date('Y-m-d');
-        $this->dailyMenuJob = new DailyMenu(new VendiakParser($this->getMockHtmlParser()),
-                                            new DailyMenuDao((new PdoFactory())->getPdo()));
     }
 
     /**
@@ -35,6 +33,8 @@ class DailyMenuTest extends TestCase
     public function run_GivenVendiakParserGivesBackSourceCode_DailyMenuIsInsertedToDB()
     {
         $this->insertRestaurants([$this->aRestaurant()]);
+        $this->dailyMenuJob = new DailyMenu(new VendiakParser($this->getMockHtmlParser()),
+            new DailyMenuDao((new PdoFactory())->getPdo()));
         $this->dailyMenuJob->run();
 
         $expectedDailyMenu = [
@@ -52,7 +52,12 @@ class DailyMenuTest extends TestCase
      */
     public function run_GivenVendiakDailyMenuIsAlreadySaved_DoesNotInsertItAgain()
     {
-        self::markTestIncomplete();
+        $mockHTMLParser = $this->getMockBuilder(Dom::class)
+            ->setMethods(['load'])
+            ->getMock();
+        $this->dailyMenuJob = new DailyMenu(new VendiakParser($mockHTMLParser),
+            new DailyMenuDao((new PdoFactory())->getPdo()));
+
         $this->insertRestaurants([$this->aRestaurant()]);
         $this->insertMenus([$this->aMenu(1, 1, $this->dateOfToday)]);
         $this->dailyMenuJob->run();

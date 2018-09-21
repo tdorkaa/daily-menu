@@ -24,7 +24,9 @@ class DailyMenu
 
     public function run()
     {
-        $menu = implode(', ', $this->vendiakParser->getDailyMenu());
-        $this->dailyMenuDao->insertDailyMenu(1, $menu, date('Y-m-d'));
+        if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists(1)) {
+            $menu = implode(', ', $this->vendiakParser->getDailyMenu());
+            $this->dailyMenuDao->insertDailyMenu(1, $menu, date('Y-m-d'));
+        }
     }
 }
