@@ -2,6 +2,7 @@
 
 namespace Tests\Parser;
 
+use DailyMenu\Parser\Exception\MuzikumParserException;
 use DailyMenu\Parser\MuzikumParser;
 use DailyMenu\Parser\ParserHelper;
 use PHPUnit\Framework\TestCase;
@@ -12,6 +13,9 @@ class MuzikumParserTest extends TestCase
     use MockHtmlParser;
     
     private $mockParser;
+    /**
+     * @var MuzikumParser
+     */
     private $muzikumParser;
     
     protected function setUp()
@@ -43,8 +47,7 @@ class MuzikumParserTest extends TestCase
      */
     public function getDailyMenu_GivenDateIsTuesDay_ReturnsDailyMenu()
     {
-        $dailyMenu = $this->muzikumParser->getDailyMenu(new ParserHelper(), '2018-09-25');
-        $this->assertEquals(['Burgonyás kelleves kéksajtos tejföllel',
-            'Háromborsos sertésborda tejfölös jalapeno-val, jázmin rizzsel'], $dailyMenu);
+        $this->expectException(MuzikumParserException::class);
+        $this->muzikumParser->getDailyMenu(new ParserHelper(), '2018-09-29');
     }
 }

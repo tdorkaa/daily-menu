@@ -3,6 +3,7 @@
 namespace DailyMenu\Parser;
 
 
+use DailyMenu\Parser\Exception\MuzikumParserException;
 use PHPHtmlParser\Dom;
 
 class MuzikumParser
@@ -30,6 +31,10 @@ class MuzikumParser
     private function findMenuForCurrentDay($date)
     {
         $date = date('w', strtotime($date));
-        return $this->dom->find('.content-right div p', ($date - 1) * 2)->text;
+        if ($date < 6) {
+            return $this->dom->find('.content-right div p', ($date - 1) * 2)->text;
+        } else {
+            throw new MuzikumParserException('Muzikum does not have menu during the weekend.');
+        }
     }
 }
