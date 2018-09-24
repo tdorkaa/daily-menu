@@ -4,3 +4,8 @@
         <li>{{ dailymenu.restaurant }} : {{ dailymenu.menu }}</li>
     {% endfor %}
 </ul>
+<form method="GET" action="/menus?date1={{ date1 }}&date2={{ date2 }}">
+        <input type="text" name="date1" placeholder="From">
+        <input type="text" name="date2" placeholder="To">
+        <button type="submit">Search</button>
+</form>

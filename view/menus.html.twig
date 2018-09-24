@@ -1,0 +1,11 @@
+<div>Menus between {{ date1 }} and {{ date2 }}</div>
+<ul>
+    {% for menu in menus %}
+        <li>{{ menu.restaurant }}</li>
+        <ul>
+            {% for item in menu.menus %}
+            <li>{{ item.date }} : {{ item.menu }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>

@@ -33,6 +33,7 @@ class AppBuilder
     {
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
         $app->get('/dailymenus', DailyMenu::class . ':getDailyMenus');
+        $app->get('/menus', DailyMenu::class . ':getMenusByDate');
     }
 
     private static function setUpDb($container)
@@ -69,7 +70,8 @@ class AppBuilder
         $container[DailyMenu::class] = function ($container) {
             return new DailyMenu(
                 $container['view'],
-                new DailyMenuDao($container['pdo'])
+                new DailyMenuDao($container['pdo']),
+                new MenusConverter()
             );
         };
     }

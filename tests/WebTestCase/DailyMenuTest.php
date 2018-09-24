@@ -33,14 +33,15 @@ class DailyMenuTest extends TestCase
     /**
      * @test
      */
-    public function getMenusByRestaurant_Given_Returns200AndDailyMenus()
+    public function getMenusByDate_GivenDbContainsOneRestaurantAndNotAllMenusAreInTheDateRange_Returns200AndDailyMenus()
     {
-        $menu = $this->aMenu(1,1, date('Y-m-d'));
         $this->insertRestaurants([$this->aRestaurant()]);
-        $this->insertMenus([$menu]);
-        $response = $this->processRequest('GET', '/dailymenus' );
+        $this->insertMenus([$this->aMenu(1,1), $this->aMenu(2,1, '2018-09-23'),
+                            $this->aMenu(3,1, '2018-09-24')]);
+        $response = $this->processRequest('GET', '/menus?date1=2018-09-20&date2=2018-09-23');
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertContains('Fiction Stars1', (string)$response->getBody());
         $this->assertContains('Leves, Fozelek1', (string)$response->getBody());
+        $this->assertContains('Leves, Fozelek2', (string)$response->getBody());
     }
 }
