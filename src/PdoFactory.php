@@ -25,6 +25,7 @@ class PdoFactory
     private function getDsn(): string
     {
         $dbname = getenv('DB_NAME');
-        return "mysql:host=mysql;dbname={$dbname};charset=utf8mb4";
+        $host = getenv('HOST');
+        return "mysql:host={$host};dbname={$dbname};charset=utf8mb4";
     }
 }
