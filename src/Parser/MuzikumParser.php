@@ -17,13 +17,19 @@ class MuzikumParser
         $this->dom = $dom;
     }
 
-    public function getDailyMenu(ParserHelper $parserHelper): array
+    public function getDailyMenu(ParserHelper $parserHelper, $date): array
     {
         $this->dom->load('http://muzikum.hu/heti-menu/', [
             'preserveLineBreaks' => true,
         ]);
-        $parsedMenu = $this->dom->find('.content-right div p', 0)->text;
+        $parsedMenu = $this->findMenuForCurrentDay($date);
         $parsedMenuAsAnArrayWithExtraSpaces = preg_split("/\n/", $parsedMenu);
         return $parserHelper->trimArray($parsedMenuAsAnArrayWithExtraSpaces);
+    }
+
+    private function findMenuForCurrentDay($date)
+    {
+        $date = date('w', strtotime($date));
+        return $this->dom->find('.content-right div p', ($date - 1) * 2)->text;
     }
 }
