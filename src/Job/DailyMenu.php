@@ -3,6 +3,7 @@
 namespace DailyMenu\Job;
 
 use DailyMenu\Dao\DailyMenu as DailyMenuDao;
+use DailyMenu\Parser\ParserHelper;
 use DailyMenu\Parser\VendiakParser;
 
 class DailyMenu
@@ -25,7 +26,7 @@ class DailyMenu
     public function run()
     {
         if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists(1)) {
-            $menu = implode(', ', $this->vendiakParser->getDailyMenu());
+            $menu = implode(', ', $this->vendiakParser->getDailyMenu(new ParserHelper()));
             $this->dailyMenuDao->insertDailyMenu(1, $menu, date('Y-m-d'));
         }
     }

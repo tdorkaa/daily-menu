@@ -13,7 +13,7 @@ class VendiakParser
         $this->dom = $dom;
     }
 
-    public function getDailyMenu(): array
+    public function getDailyMenu(ParserHelper $parserHelper): array
     {
         $this->dom->load('http://www.vendiaketterem.hu/', [
             'preserveLineBreaks' => true,
@@ -21,14 +21,6 @@ class VendiakParser
         $parsedMenu = trim($this->dom->find('.offer-item', 0)->text);
 
         $dailyMenuWithExtraSpaces = array_slice(preg_split("/\n/", $parsedMenu), 0, 3);
-        return $this->trimAnArray($dailyMenuWithExtraSpaces);
-    }
-
-    private function trimAnArray($arrayToTrim)
-    {
-        foreach ($arrayToTrim as $index => $item) {
-            $arrayToTrim[$index] = trim($item);
-        }
-        return $arrayToTrim;
+        return $parserHelper->trimArray($dailyMenuWithExtraSpaces);
     }
 }

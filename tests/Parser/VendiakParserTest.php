@@ -2,6 +2,7 @@
 
 namespace Tests\Parser;
 
+use DailyMenu\Parser\ParserHelper;
 use DailyMenu\Parser\VendiakParser;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +28,7 @@ class VendiakParserTest extends TestCase
             ['preserveLineBreaks' => true]
         );
         $vediakParser = new VendiakParser($mockParser);
-        $dailyMenu = $vediakParser->getDailyMenu();
+        $dailyMenu = $vediakParser->getDailyMenu(new ParserHelper());
         $this->assertEquals(['Házi tea', 'Zöldségkrémleves',
             'Milánói sertésborda'], $dailyMenu);
     }
