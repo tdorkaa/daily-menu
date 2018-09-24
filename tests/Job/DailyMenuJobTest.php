@@ -33,7 +33,17 @@ class DailyMenuTest extends TestCase
     public function run_GivenVendiakParserGivesBackSourceCode_DailyMenuIsInsertedToDB()
     {
         $this->insertRestaurants([$this->aRestaurant()]);
-        $this->dailyMenuJob = new DailyMenu(new VendiakParser($this->getMockHtmlParser()),
+        $mockHtmlParser = $this->getMockHtmlParser();
+        $mockHtmlParser
+            ->expects($this->once())
+            ->method('load')
+            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
+
+        $mockHtmlParser->loadStr(
+            file_get_contents(__DIR__ . '/../Parser/HtmlContent/Vendiak.html'),
+            ['preserveLineBreaks' => true]
+        );
+        $this->dailyMenuJob = new DailyMenu(new VendiakParser($mockHtmlParser),
             new DailyMenuDao((new PdoFactory())->getPdo()));
         $this->dailyMenuJob->run();
 

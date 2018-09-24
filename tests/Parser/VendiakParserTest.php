@@ -14,9 +14,19 @@ class VendiakParserTest extends TestCase
     /**
      * @test
      */
-    public function parser_GivenLoadedHtmlSource_returnsDailyMenu()
+    public function getDailyMenu_GivenLoadedHtmlSource_returnsDailyMenu()
     {
-        $vediakParser = new VendiakParser($this->getMockHtmlParser());
+        $mockParser = $this->getMockHtmlParser();
+        $mockParser
+            ->expects($this->once())
+            ->method('load')
+            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
+
+        $mockParser->loadStr(
+            file_get_contents(__DIR__ . '/HtmlContent/Vendiak.html'),
+            ['preserveLineBreaks' => true]
+        );
+        $vediakParser = new VendiakParser($mockParser);
         $dailyMenu = $vediakParser->getDailyMenu();
         $this->assertEquals(['Házi tea', 'Zöldségkrémleves',
             'Milánói sertésborda'], $dailyMenu);

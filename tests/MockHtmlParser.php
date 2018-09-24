@@ -12,16 +12,6 @@ trait MockHtmlParser
             ->setMethods(['load'])
             ->getMock();
 
-        $mockHTMLParser
-            ->expects($this->once())
-            ->method('load')
-            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
-
-        $mockHTMLParser->loadStr(
-            file_get_contents(__DIR__ . '/Parser/HtmlContent/Vendiak.html'),
-            ['preserveLineBreaks' => true]
-        );
-
         return $mockHTMLParser;
     }
 
