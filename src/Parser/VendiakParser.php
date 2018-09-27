@@ -5,7 +5,7 @@ namespace DailyMenu\Parser;
 use DailyMenu\Parser\Exception\VendiakParserException;
 use PHPHtmlParser\Dom;
 
-class VendiakParser
+class VendiakParser extends Parser
 {
     private $dom;
 
@@ -14,11 +14,8 @@ class VendiakParser
         $this->dom = $dom;
     }
 
-    public function getDailyMenu(ParserHelper $parserHelper, $date): array
+    protected function parseDailyMenu(ParserHelper $parserHelper)
     {
-        $dayOfTheWeek = date('w', strtotime($date));
-        $isOnWorkDay = $dayOfTheWeek < 6;
-        if ($isOnWorkDay) {
         $this->dom->load('http://www.vendiaketterem.hu/', [
             'preserveLineBreaks' => true,
         ]);
@@ -26,8 +23,10 @@ class VendiakParser
 
         $dailyMenuWithExtraSpaces = array_slice(preg_split("/\n/", $parsedMenu), 0, 3);
         return $parserHelper->trimArray($dailyMenuWithExtraSpaces);
-        } else {
-            throw new VendiakParserException('Vendiak does not have menu during the weekend.');
-        }
+    }
+
+    protected function throwParserException()
+    {
+        throw new VendiakParserException('Vendiak does not have menu during the weekend.');
     }
 }
