@@ -4,7 +4,6 @@ namespace DailyMenu\Parser;
 
 class ParserMapper
 {
-
     public static function getParserMap()
     {
         return [

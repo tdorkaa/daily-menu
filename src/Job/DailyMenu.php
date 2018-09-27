@@ -4,29 +4,31 @@ namespace DailyMenu\Job;
 
 use DailyMenu\Dao\DailyMenu as DailyMenuDao;
 use DailyMenu\Parser\ParserHelper;
-use DailyMenu\Parser\VendiakParser;
+use PHPHtmlParser\Dom;
 
 class DailyMenu
 {
     /**
-     * @var VendiakParser
-     */
-    private $vendiakParser;
-    /**
      * @var DailyMenuDao
      */
     private $dailyMenuDao;
+    /**
+     * @var array
+     */
+    private $parserMapper;
 
-    public function __construct(VendiakParser $vendiakParser, DailyMenuDao $dailyMenuDao)
+    public function __construct(DailyMenuDao $dailyMenuDao, array $parserMapper)
     {
-        $this->vendiakParser = $vendiakParser;
         $this->dailyMenuDao = $dailyMenuDao;
+        $this->parserMapper = $parserMapper;
     }
 
     public function run()
     {
+        $vendiakParser = new $this->parserMapper['Véndiák Cafe Lounge'](new Dom());
+
         if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists(1)) {
-            $menu = implode(', ', $this->vendiakParser->getDailyMenu(new ParserHelper()));
+            $menu = implode(', ', $vendiakParser->getDailyMenu(new ParserHelper()));
             $this->dailyMenuDao->insertDailyMenu(1, $menu, date('Y-m-d'));
         }
     }
