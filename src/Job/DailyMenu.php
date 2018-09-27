@@ -4,6 +4,7 @@ namespace DailyMenu\Job;
 
 use DailyMenu\Dao\DailyMenu as DailyMenuDao;
 use DailyMenu\Parser\ParserHelper;
+use Monolog\Logger;
 use PHPHtmlParser\Dom;
 
 class DailyMenu
@@ -16,11 +17,16 @@ class DailyMenu
      * @var array
      */
     private $parserMapper;
+    /**
+     * @var Logger
+     */
+    private $logger;
 
-    public function __construct(DailyMenuDao $dailyMenuDao, array $parserMapper)
+    public function __construct(DailyMenuDao $dailyMenuDao, array $parserMapper, Logger $logger)
     {
         $this->dailyMenuDao = $dailyMenuDao;
         $this->parserMapper = $parserMapper;
+        $this->logger = $logger;
     }
 
     public function run()
@@ -31,12 +37,12 @@ class DailyMenu
             try {
                 $parser = new $this->parserMapper[$restaurant['name']](new Dom());
 
-                if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
+                if (!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
                     $menu = implode(', ', $parser->getDailyMenu(new ParserHelper(), date('Y-m-d')));
                     $this->dailyMenuDao->insertDailyMenu($restaurant['id'], $menu, $dateOfToday);
                 }
             } catch (\Exception $exception) {
-
+                $this->logger->addError($exception->getMessage());
             }
         }
     }
