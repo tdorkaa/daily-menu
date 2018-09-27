@@ -17,12 +17,16 @@ class Restaurants extends AbstractSeed
     {
         $data = [
             [
-                'name' => 'Véndiák',
+                'name' => 'Véndiák Cafe Lounge',
+            ],
+            [
+                'name' => 'Muzikum Klub & Bistro',
             ]
         ];
 
         $posts = $this->table('restaurants');
-        $posts->insert($data)
+        $posts
+            ->insert($data)
             ->save();
     }
 }

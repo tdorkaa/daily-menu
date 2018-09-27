@@ -8,6 +8,7 @@ use DailyMenu\Parser\ParserHelper;
 use DailyMenu\Parser\ParserMapper;
 use DailyMenu\Parser\VendiakParser;
 use DailyMenu\PdoFactory;
+use Monolog\Logger;
 use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 use Tests\DbHelper;
@@ -20,6 +21,7 @@ class DailyMenuTest extends TestCase
 
     private $dateOfToday;
     private $dailyMenuJob;
+    private $mockLogger;
 
     protected function setUp()
     {
@@ -27,6 +29,7 @@ class DailyMenuTest extends TestCase
         $this->truncate('restaurants');
         $this->truncate('menus');
         $this->dateOfToday = date('Y-m-d');
+        $this->mockLogger = $this->createMock(Logger::class);
     }
 
     /**
@@ -44,7 +47,7 @@ class DailyMenuTest extends TestCase
         ];
 
         $this->dailyMenuJob = new DailyMenu(
-            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper);
+            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper, $this->mockLogger);
         $this->dailyMenuJob->run();
 
         $expectedDailyMenu = [
@@ -71,7 +74,7 @@ class DailyMenuTest extends TestCase
             'Véndiák Cafe Lounge' => FakeVendiakParser::class
         ];
         $this->dailyMenuJob = new DailyMenu(
-            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper);
+            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper, $this->mockLogger);
 
         $this->dailyMenuJob->run();
         $dateOfToday = date('Y-m-d');
@@ -102,7 +105,7 @@ class DailyMenuTest extends TestCase
             'Muzikum Klub & Bistro' => FakeMuzikumParser::class
         ];
         $this->dailyMenuJob = new DailyMenu(
-            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper);
+            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper, $this->mockLogger);
         $this->dailyMenuJob->run();
 
         $expectedDailyMenu = [
@@ -145,7 +148,7 @@ class DailyMenuTest extends TestCase
             'Muzikum Klub & Bistro' => FakeMuzikumParser::class
         ];
         $this->dailyMenuJob = new DailyMenu(
-            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper);
+            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper, $this->mockLogger);
         $this->dailyMenuJob->run();
 
         $expectedDailyMenu = [
