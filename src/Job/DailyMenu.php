@@ -25,11 +25,15 @@ class DailyMenu
 
     public function run()
     {
-        $vendiakParser = new $this->parserMapper['Véndiák Cafe Lounge'](new Dom());
+        $dateOfToday = date('Y-m-d');
+        $restaurants = $this->dailyMenuDao->getRestaurants();
+        foreach ($restaurants as $restaurant) {
+            $parser = new $this->parserMapper[$restaurant['name']](new Dom());
 
-        if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists(1)) {
-            $menu = implode(', ', $vendiakParser->getDailyMenu(new ParserHelper()));
-            $this->dailyMenuDao->insertDailyMenu(1, $menu, date('Y-m-d'));
+            if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
+                $menu = implode(', ', $parser->getDailyMenu(new ParserHelper(), date('Y-m-d')));
+                $this->dailyMenuDao->insertDailyMenu($restaurant['id'], $menu, $dateOfToday);
+            }
         }
     }
 }

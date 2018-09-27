@@ -84,7 +84,6 @@ class DailyMenuTest extends TestCase
      */
     public function run_GivenTwoRestaurantParsers_InsertBothDailyMenu()
     {
-        self::markTestIncomplete();
         $this->insertRestaurants(
             [
                 [
@@ -116,8 +115,7 @@ class DailyMenuTest extends TestCase
             [
                 'id' => 2,
                 'restaurant_id' => 2,
-                'menu' => 'Francia hagymaleves diós veknivel,
-                           Csirkemell sajttal, sonkával sütve, petrezselymes burgonyával',
+                'menu' => 'Francia hagymaleves diós veknivel, Csirkemell sajttal, sonkával sütve, petrezselymes burgonyával',
                 'date' => $this->dateOfToday
             ]
         ];
