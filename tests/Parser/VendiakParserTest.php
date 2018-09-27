@@ -2,9 +2,9 @@
 
 namespace Tests\Parser;
 
+use DailyMenu\Parser\Exception\VendiakParserException;
 use DailyMenu\Parser\ParserHelper;
 use DailyMenu\Parser\VendiakParser;
-use PHPHtmlParser\Dom;
 use PHPUnit\Framework\TestCase;
 use Tests\MockHtmlParser;
 
@@ -28,8 +28,23 @@ class VendiakParserTest extends TestCase
             ['preserveLineBreaks' => true]
         );
         $vediakParser = new VendiakParser($mockParser);
-        $dailyMenu = $vediakParser->getDailyMenu(new ParserHelper());
+        $dailyMenu = $vediakParser->getDailyMenu(new ParserHelper(), date('2018-09-27'));
         $this->assertEquals(['Házi tea', 'Zöldségkrémleves',
             'Milánói sertésborda'], $dailyMenu);
+    }
+
+    /**
+     * @test
+     */
+    public function getDailyMenu_GivenDateIsOnWeekend_ThrowsVendiakParserException()
+    {
+        $mockParser = $this->getMockHtmlParser();
+        $mockParser
+            ->expects($this->never())
+            ->method('load')
+            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
+        $this->expectException(VendiakParserException::class);
+        $vediakParser = new VendiakParser($mockParser);
+        $vediakParser->getDailyMenu(new ParserHelper(), date('2018-09-29'));
     }
 }
