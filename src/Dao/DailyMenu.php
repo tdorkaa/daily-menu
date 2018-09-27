@@ -83,4 +83,15 @@ class DailyMenu
         ]);
         return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    public function getRestaurants()
+    {
+        $sql = "
+            SELECT id, name
+            FROM restaurants
+        ";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+    }
 }

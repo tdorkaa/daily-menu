@@ -141,4 +141,19 @@ class DailyMenuTest extends TestCase
         $actual = $this->dao->getMenusByDateOrderByRestaurantId('2018-09-11', '2018-09-22');
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function getRestaurants_GivenRestaurantsAreInserted_ReturnsRestaurants()
+    {
+        $this->insertRestaurants([$this->aRestaurant()]);
+        $this->insertRestaurants([$this->aRestaurant(2)]);
+        $expected = [
+            $this->aRestaurant(),
+            $this->aRestaurant(2)
+        ];
+        $actual = $this->dao->getRestaurants();
+        $this->assertEquals($expected, $actual);
+    }
 }

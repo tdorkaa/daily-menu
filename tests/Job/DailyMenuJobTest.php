@@ -78,4 +78,51 @@ class DailyMenuTest extends TestCase
         $actualDailyMenu = $this->getDailyMenuFromMenuTable($dateOfToday);
         $this->assertEquals(1, count($actualDailyMenu));
     }
+
+    /**
+     * @test
+     */
+    public function run_GivenTwoRestaurantParsers_InsertBothDailyMenu()
+    {
+        self::markTestIncomplete();
+        $this->insertRestaurants(
+            [
+                [
+                    'id' => 1,
+                    'name' => 'Véndiák Cafe Lounge',
+                ],
+                [
+                    'id' => 2,
+                    'name' => 'Muzikum Klub & Bistro',
+                ]
+            ]
+        );
+
+        $mockParserMapper = [
+            'Véndiák Cafe Lounge' => FakeVendiakParser::class,
+            'Muzikum Klub & Bistro' => FakeMuzikumParser::class
+        ];
+        $this->dailyMenuJob = new DailyMenu(
+            new DailyMenuDao((new PdoFactory())->getPdo()), $mockParserMapper);
+        $this->dailyMenuJob->run();
+
+        $expectedDailyMenu = [
+            [
+                'id' => 1,
+                'restaurant_id' => 1,
+                'menu' => 'Házi tea, Zöldségkrémleves, Milánói sertésborda',
+                'date' => $this->dateOfToday
+            ],
+            [
+                'id' => 2,
+                'restaurant_id' => 2,
+                'menu' => 'Francia hagymaleves diós veknivel,
+                           Csirkemell sajttal, sonkával sütve, petrezselymes burgonyával',
+                'date' => $this->dateOfToday
+            ]
+        ];
+        $actualDailyMenu = $this->getDailyMenuFromMenuTable($this->dateOfToday);
+        $this->assertEquals($expectedDailyMenu, $actualDailyMenu);
+
+    }
 }
