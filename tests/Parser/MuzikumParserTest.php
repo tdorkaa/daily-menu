@@ -21,6 +21,13 @@ class MuzikumParserTest extends TestCase
     protected function setUp()
     {
         $this->mockParser = $this->getMockHtmlParser();
+        $this->muzikumParser = new MuzikumParser($this->mockParser);    }
+
+    /**
+     * @test
+     */
+    public function getDailyMenu_GivenLoadedSourceCode_ReturnsDailyMenu()
+    {
         $this->mockParser
             ->expects($this->once())
             ->method('load')
@@ -30,13 +37,6 @@ class MuzikumParserTest extends TestCase
             file_get_contents(__DIR__ . '/HtmlContent/Muzikum.html'),
             ['preserveLineBreaks' => true]
         );
-        $this->muzikumParser = new MuzikumParser($this->mockParser);    }
-
-    /**
-     * @test
-     */
-    public function getDailyMenu_GivenLoadedSourceCode_ReturnsDailyMenu()
-    {
         $dailyMenu = $this->muzikumParser->getDailyMenu(new ParserHelper(), '2018-09-24');
         $this->assertEquals(['Francia hagymaleves diós veknivel',
             'Csirkemell sajttal, sonkával sütve, petrezselymes burgonyával'], $dailyMenu);
@@ -45,8 +45,13 @@ class MuzikumParserTest extends TestCase
     /**
      * @test
      */
-    public function getDailyMenu_GivenDateIsTuesDay_ReturnsDailyMenu()
+    public function getDailyMenu_GivenDateIsSaturDay_ReturnsDailyMenu()
     {
+        $this->mockParser
+            ->expects($this->never())
+            ->method('load')
+            ->with('http://muzikum.hu/heti-menu/', ['preserveLineBreaks' => true]);
+
         $this->expectException(MuzikumParserException::class);
         $this->muzikumParser->getDailyMenu(new ParserHelper(), '2018-09-29');
     }

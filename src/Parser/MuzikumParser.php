@@ -6,7 +6,7 @@ namespace DailyMenu\Parser;
 use DailyMenu\Parser\Exception\MuzikumParserException;
 use PHPHtmlParser\Dom;
 
-class MuzikumParser
+class MuzikumParser extends Parser
 {
     /**
      * @var Dom
@@ -18,24 +18,18 @@ class MuzikumParser
         $this->dom = $dom;
     }
 
-    public function getDailyMenu(ParserHelper $parserHelper, $date): array
+    protected function parseDailyMenu(ParserHelper $parserHelper, $dayOfTheWeek)
     {
         $this->dom->load('http://muzikum.hu/heti-menu/', [
             'preserveLineBreaks' => true,
         ]);
-        $parsedMenu = $this->findMenuForCurrentDay($date);
+        $parsedMenu = $this->dom->find('.content-right div p', ($dayOfTheWeek - 1) * 2)->text;
         $parsedMenuAsAnArrayWithExtraSpaces = preg_split("/\n/", $parsedMenu);
         return $parserHelper->trimArray($parsedMenuAsAnArrayWithExtraSpaces);
     }
 
-    private function findMenuForCurrentDay($date)
+    protected function throwParserException()
     {
-        $dayOfTheWeek = date('w', strtotime($date));
-        $isOnWorkDay = $dayOfTheWeek < 6;
-        if ($isOnWorkDay) {
-            return $this->dom->find('.content-right div p', ($dayOfTheWeek - 1) * 2)->text;
-        } else {
-            throw new MuzikumParserException('Muzikum does not have menu during the weekend.');
-        }
+        throw new MuzikumParserException('Muzikum does not have menu during the weekend.');
     }
 }

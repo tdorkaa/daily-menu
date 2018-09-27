@@ -9,12 +9,12 @@ abstract class Parser
         $dayOfTheWeek = date('w', strtotime($date));
         $isOnWorkDay = $dayOfTheWeek < 6;
         if ($isOnWorkDay) {
-            return $this->parseDailyMenu($parserHelper);
+            return $this->parseDailyMenu($parserHelper, $dayOfTheWeek);
         } else {
             $this->throwParserException();
         }
     }
 
-    abstract protected function parseDailyMenu(ParserHelper $parserHelper);
+    abstract protected function parseDailyMenu(ParserHelper $parserHelper, $dayOfTheWeek);
     abstract protected function throwParserException();
 }

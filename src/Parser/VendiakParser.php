@@ -14,7 +14,7 @@ class VendiakParser extends Parser
         $this->dom = $dom;
     }
 
-    protected function parseDailyMenu(ParserHelper $parserHelper)
+    protected function parseDailyMenu(ParserHelper $parserHelper, $dayOfTheWeek)
     {
         $this->dom->load('http://www.vendiaketterem.hu/', [
             'preserveLineBreaks' => true,
