@@ -33,7 +33,7 @@ class MuzikumParser
         $dayOfTheWeek = date('w', strtotime($date));
         $isOnWorkDay = $dayOfTheWeek < 6;
         if ($isOnWorkDay) {
-            return $this->dom->find('.content-right div p', ($date - 1) * 2)->text;
+            return $this->dom->find('.content-right div p', ($dayOfTheWeek - 1) * 2)->text;
         } else {
             throw new MuzikumParserException('Muzikum does not have menu during the weekend.');
         }

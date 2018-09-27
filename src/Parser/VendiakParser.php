@@ -16,8 +16,9 @@ class VendiakParser
 
     public function getDailyMenu(ParserHelper $parserHelper, $date): array
     {
-        $date = date('w', strtotime($date));
-        if ($date < 6) {
+        $dayOfTheWeek = date('w', strtotime($date));
+        $isOnWorkDay = $dayOfTheWeek < 6;
+        if ($isOnWorkDay) {
         $this->dom->load('http://www.vendiaketterem.hu/', [
             'preserveLineBreaks' => true,
         ]);
