@@ -2,7 +2,7 @@
 
 namespace DailyMenu\Parser\Exception;
 
-class VendiakParserException extends ParserException
+class VendiakParserException extends \Exception
 {
 
 }

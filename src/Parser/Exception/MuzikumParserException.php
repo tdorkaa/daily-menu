@@ -2,7 +2,7 @@
 
 namespace DailyMenu\Parser\Exception;
 
-class MuzikumParserException extends ParserException
+class MuzikumParserException extends \Exception
 {
 
 }
