@@ -30,8 +30,9 @@ class MuzikumParser
 
     private function findMenuForCurrentDay($date)
     {
-        $date = date('w', strtotime($date));
-        if ($date < 6) {
+        $dayOfTheWeek = date('w', strtotime($date));
+        $isOnWorkDay = $dayOfTheWeek < 6;
+        if ($isOnWorkDay) {
             return $this->dom->find('.content-right div p', ($date - 1) * 2)->text;
         } else {
             throw new MuzikumParserException('Muzikum does not have menu during the weekend.');
