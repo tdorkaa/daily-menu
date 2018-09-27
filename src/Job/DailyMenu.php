@@ -28,11 +28,15 @@ class DailyMenu
         $dateOfToday = date('Y-m-d');
         $restaurants = $this->dailyMenuDao->getRestaurants();
         foreach ($restaurants as $restaurant) {
-            $parser = new $this->parserMapper[$restaurant['name']](new Dom());
+            try {
+                $parser = new $this->parserMapper[$restaurant['name']](new Dom());
 
-            if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
-                $menu = implode(', ', $parser->getDailyMenu(new ParserHelper(), date('Y-m-d')));
-                $this->dailyMenuDao->insertDailyMenu($restaurant['id'], $menu, $dateOfToday);
+                if(!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
+                    $menu = implode(', ', $parser->getDailyMenu(new ParserHelper(), date('Y-m-d')));
+                    $this->dailyMenuDao->insertDailyMenu($restaurant['id'], $menu, $dateOfToday);
+                }
+            } catch (\Exception $exception) {
+
             }
         }
     }
