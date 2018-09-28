@@ -8,7 +8,8 @@ class ParserMapper
     {
         return [
             'Véndiák Cafe Lounge' => VendiakParser::class,
-            'Muzikum Klub & Bistro' => MuzikumParser::class
+            'Muzikum Klub & Bistro' => MuzikumParser::class,
+            'Cafe Intenso' => CafeIntensoParser::class
         ];
     }
 }
