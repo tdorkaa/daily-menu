@@ -28,7 +28,7 @@ class VendiakParserTest extends TestCase
             ['preserveLineBreaks' => true]
         );
         $vediakParser = new VendiakParser($mockParser);
-        $dailyMenu = $vediakParser->getDailyMenu(new ParserHelper(), date('2018-09-27'));
+        $dailyMenu = $vediakParser->getDailyMenu(date('2018-09-27'));
         $this->assertEquals(['Házi tea', 'Zöldségkrémleves',
             'Milánói sertésborda'], $dailyMenu);
     }
@@ -45,6 +45,6 @@ class VendiakParserTest extends TestCase
             ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
         $this->expectException(VendiakParserException::class);
         $vediakParser = new VendiakParser($mockParser);
-        $vediakParser->getDailyMenu(new ParserHelper(), date('2018-09-29'));
+        $vediakParser->getDailyMenu(date('2018-09-29'));
     }
 }

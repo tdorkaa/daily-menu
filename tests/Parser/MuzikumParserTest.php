@@ -37,7 +37,7 @@ class MuzikumParserTest extends TestCase
             file_get_contents(__DIR__ . '/HtmlContent/Muzikum.html'),
             ['preserveLineBreaks' => true]
         );
-        $dailyMenu = $this->muzikumParser->getDailyMenu(new ParserHelper(), '2018-09-24');
+        $dailyMenu = $this->muzikumParser->getDailyMenu('2018-09-24');
         $this->assertEquals(['Francia hagymaleves diós veknivel',
             'Csirkemell sajttal, sonkával sütve, petrezselymes burgonyával'], $dailyMenu);
     }
@@ -53,6 +53,6 @@ class MuzikumParserTest extends TestCase
             ->with('http://muzikum.hu/heti-menu/', ['preserveLineBreaks' => true]);
 
         $this->expectException(MuzikumParserException::class);
-        $this->muzikumParser->getDailyMenu(new ParserHelper(), '2018-09-29');
+        $this->muzikumParser->getDailyMenu('2018-09-29');
     }
 }

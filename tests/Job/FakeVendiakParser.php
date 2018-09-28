@@ -3,11 +3,10 @@
 namespace Tests\Job;
 
 use DailyMenu\Parser\Exception\VendiakParserException;
-use DailyMenu\Parser\ParserHelper;
 
 class FakeVendiakParser
 {
-    public function getDailyMenu(ParserHelper $parserHelper, $date)
+    public function getDailyMenu($date)
     {
         $dayOfTheWeek = date('w', strtotime($date));
         $isOnWorkDay = $dayOfTheWeek < 6;

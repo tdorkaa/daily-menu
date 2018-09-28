@@ -16,16 +16,16 @@ class DailyMenu
     /**
      * @var array
      */
-    private $parserMapper;
+    private $parserRestaurantMap;
     /**
      * @var Logger
      */
     private $logger;
 
-    public function __construct(DailyMenuDao $dailyMenuDao, array $parserMapper, Logger $logger)
+    public function __construct(DailyMenuDao $dailyMenuDao, array $parserRestaurantMap, Logger $logger)
     {
         $this->dailyMenuDao = $dailyMenuDao;
-        $this->parserMapper = $parserMapper;
+        $this->parserRestaurantMap = $parserRestaurantMap;
         $this->logger = $logger;
     }
 
@@ -35,12 +35,14 @@ class DailyMenu
         $restaurants = $this->dailyMenuDao->getRestaurants();
         foreach ($restaurants as $restaurant) {
             try {
-                $parser = new $this->parserMapper[$restaurant['name']](new Dom());
 
-                if (!$this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
-                    $menu = implode(', ', $parser->getDailyMenu(new ParserHelper(), date('Y-m-d')));
-                    $this->dailyMenuDao->insertDailyMenu($restaurant['id'], $menu, $dateOfToday);
+                if ($this->dailyMenuDao->isDailyMenuByRestaurantIdExists($restaurant['id'])) {
+                    continue;
                 }
+
+                $parser = new $this->parserRestaurantMap[$restaurant['name']](new Dom());
+                $menu = implode(', ', $parser->getDailyMenu($dateOfToday));
+                $this->dailyMenuDao->insertDailyMenu($restaurant['id'], $menu, $dateOfToday);
             } catch (\Exception $exception) {
                 $this->logger->addError($exception->getMessage());
             }

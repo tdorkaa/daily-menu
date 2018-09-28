@@ -14,7 +14,7 @@ class VendiakParser extends Parser
         $this->dom = $dom;
     }
 
-    protected function parseDailyMenu(ParserHelper $parserHelper, $dayOfTheWeek)
+    protected function parseDailyMenu($dayOfTheWeek)
     {
         $this->dom->load('http://www.vendiaketterem.hu/', [
             'preserveLineBreaks' => true,
@@ -22,7 +22,7 @@ class VendiakParser extends Parser
         $parsedMenu = trim($this->dom->find('.offer-item', 0)->text);
 
         $dailyMenuWithExtraSpaces = array_slice(preg_split("/\n/", $parsedMenu), 0, 3);
-        return $parserHelper->trimArray($dailyMenuWithExtraSpaces);
+        return array_map('trim', $dailyMenuWithExtraSpaces);
     }
 
     protected function throwParserException()

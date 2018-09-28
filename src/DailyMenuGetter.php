@@ -11,5 +11,9 @@ require '../vendor/autoload.php';
 $envLoader = new EnvLoader();
 $envLoader->loadEnvVars();
 
-$dailyMenuJob = new DailyMenuJob(new DailyMenuDao((new PdoFactory())->getPdo()), ParserMapper::getParserMap(), (new \DailyMenu\LoggerFactory())->build());
+$dailyMenuJob = new DailyMenuJob(
+    new DailyMenuDao((new PdoFactory())->getPdo()),
+    ParserMapper::getParserMap(),
+    (new \DailyMenu\LoggerFactory())->build()
+);
 $dailyMenuJob->run();
