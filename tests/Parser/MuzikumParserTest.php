@@ -41,18 +41,4 @@ class MuzikumParserTest extends TestCase
         $this->assertEquals(['Francia hagymaleves diós veknivel',
             'Csirkemell sajttal, sonkával sütve, petrezselymes burgonyával'], $dailyMenu);
     }
-
-    /**
-     * @test
-     */
-    public function getDailyMenu_GivenDateIsSaturDay_ReturnsDailyMenu()
-    {
-        $this->mockParser
-            ->expects($this->never())
-            ->method('load')
-            ->with('http://muzikum.hu/heti-menu/', ['preserveLineBreaks' => true]);
-
-        $this->expectException(MuzikumParserException::class);
-        $this->muzikumParser->getDailyMenu('2018-09-29');
-    }
 }

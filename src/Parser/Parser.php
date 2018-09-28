@@ -10,11 +10,8 @@ abstract class Parser
         $isOnWorkDay = $dayOfTheWeek < 6;
         if ($isOnWorkDay) {
             return $this->parseDailyMenu($dayOfTheWeek);
-        } else {
-            $this->throwParserException();
         }
     }
 
     abstract protected function parseDailyMenu($dayOfTheWeek);
-    abstract protected function throwParserException();
 }

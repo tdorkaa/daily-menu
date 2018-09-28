@@ -32,19 +32,4 @@ class VendiakParserTest extends TestCase
         $this->assertEquals(['Házi tea', 'Zöldségkrémleves',
             'Milánói sertésborda'], $dailyMenu);
     }
-
-    /**
-     * @test
-     */
-    public function getDailyMenu_GivenDateIsOnWeekend_ThrowsVendiakParserException()
-    {
-        $mockParser = $this->getMockHtmlParser();
-        $mockParser
-            ->expects($this->never())
-            ->method('load')
-            ->with('http://www.vendiaketterem.hu/', ['preserveLineBreaks' => true]);
-        $this->expectException(VendiakParserException::class);
-        $vediakParser = new VendiakParser($mockParser);
-        $vediakParser->getDailyMenu(date('2018-09-29'));
-    }
 }

@@ -26,9 +26,4 @@ class MuzikumParser extends Parser
         $parsedMenuAsAnArrayWithExtraSpaces = preg_split("/\n/", $parsedMenu);
         return array_map('trim', $parsedMenuAsAnArrayWithExtraSpaces);
     }
-
-    protected function throwParserException()
-    {
-        throw new MuzikumParserException('Muzikum does not have menu during the weekend.');
-    }
 }

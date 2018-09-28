@@ -24,9 +24,4 @@ class VendiakParser extends Parser
         $dailyMenuWithExtraSpaces = array_slice(preg_split("/\n/", $parsedMenu), 0, 3);
         return array_map('trim', $dailyMenuWithExtraSpaces);
     }
-
-    protected function throwParserException()
-    {
-        throw new VendiakParserException('Vendiak does not have menu during the weekend.');
-    }
 }
