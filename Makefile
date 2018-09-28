@@ -25,7 +25,7 @@ phpunit:
 	docker-compose exec test /bin/bash -l -c "cd tests && ../vendor/bin/phpunit ../tests --colors"
 
 mysql: ## Opens mysql cli
-	docker-compose exec mysql mysql -u academy -pacademy
+	docker-compose exec mysql mysql -u academy -pacademy --default-character-set=utf8
 
 composer-install: ## Runs composer install for sample_project
 	docker-compose exec webserver /bin/bash -l -c "composer install && php vendor/bin/phinx migrate -e development"
