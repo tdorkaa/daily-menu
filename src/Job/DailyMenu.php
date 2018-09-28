@@ -3,7 +3,6 @@
 namespace DailyMenu\Job;
 
 use DailyMenu\Dao\DailyMenu as DailyMenuDao;
-use DailyMenu\Parser\ParserHelper;
 use Monolog\Logger;
 use PHPHtmlParser\Dom;
 

@@ -2,7 +2,6 @@
 
 namespace DailyMenu\Parser;
 
-
 use DailyMenu\Parser\Exception\MuzikumParserException;
 use PHPHtmlParser\Dom;
 
