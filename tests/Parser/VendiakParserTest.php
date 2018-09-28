@@ -2,8 +2,6 @@
 
 namespace Tests\Parser;
 
-use DailyMenu\Parser\Exception\VendiakParserException;
-use DailyMenu\Parser\ParserHelper;
 use DailyMenu\Parser\VendiakParser;
 use PHPUnit\Framework\TestCase;
 use Tests\MockHtmlParser;

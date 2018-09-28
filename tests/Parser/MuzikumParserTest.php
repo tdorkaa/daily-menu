@@ -2,9 +2,7 @@
 
 namespace Tests\Parser;
 
-use DailyMenu\Parser\Exception\MuzikumParserException;
 use DailyMenu\Parser\MuzikumParser;
-use DailyMenu\Parser\ParserHelper;
 use PHPUnit\Framework\TestCase;
 use Tests\MockHtmlParser;
 

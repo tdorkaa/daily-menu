@@ -2,7 +2,6 @@
 
 namespace DailyMenu\Parser;
 
-use DailyMenu\Parser\Exception\VendiakParserException;
 use PHPHtmlParser\Dom;
 
 class VendiakParser extends Parser
