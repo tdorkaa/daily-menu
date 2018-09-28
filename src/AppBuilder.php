@@ -32,8 +32,7 @@ class AppBuilder
     private static function setUpRoutes($app)
     {
         $app->get('/healthcheck', HealthCheck::class . ':healthcheck');
-        $app->get('/dailymenus', DailyMenu::class . ':getDailyMenus');
-        $app->get('/menus', DailyMenu::class . ':getMenusByDate');
+        $app->get('/', DailyMenu::class . ':getDailyMenus');
     }
 
     private static function setUpDb($container)

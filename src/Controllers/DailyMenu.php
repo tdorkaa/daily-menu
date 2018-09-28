@@ -32,26 +32,21 @@ class DailyMenu
 
     public function getDailyMenus(Request $request, Response $response, array $args)
     {
+        $date1 = $request->getParam('date1');
+        $date2 = $request->getParam('date2');
+        $menus = [];
+        if(!empty($date1) && !empty($date2)) {
+            $menus = $this->menusConverter->convert($this->dailyMenuDao->getMenusByDateOrderByRestaurantId($date1, $date2));
+        }
 
         $today = date('Y-m-d');
         return $this->twig->render($response, 'daily-menus.html.twig',
             [
-                'dailymenus' => $this->dailyMenuDao->getDailyMenus($today)
-            ]
-        );
-    }
-
-    public function getMenusByDate(Request $request, Response $response, array $args)
-    {
-        $date1 = $request->getParam('date1');
-        $date2 = $request->getParam('date2');
-        return $this->twig->render($response, 'menus.html.twig',
-            [
+                'dailymenus' => $this->dailyMenuDao->getDailyMenus($today),
                 'date1' => $date1,
                 'date2' => $date2,
-                'menus' => $this->menusConverter->convert($this->dailyMenuDao->getMenusByDateOrderByRestaurantId($date1, $date2))
+                'menus' => $menus
             ]
         );
     }
-
 }

@@ -4,8 +4,22 @@
         <li>{{ dailymenu.restaurant }} : {{ dailymenu.menu }}</li>
     {% endfor %}
 </ul>
-<form method="GET" action="/menus?date1={{ date1 }}&date2={{ date2 }}">
+<form method="GET" action="/?date1={{ date1 }}&date2={{ date2 }}">
         <input type="text" name="date1" placeholder="From">
         <input type="text" name="date2" placeholder="To">
         <button type="submit">Search</button>
 </form>
+
+{% if menus %}
+<div>Menus between {{ date1 }} and {{ date2 }}</div>
+<ul>
+    {% for menu in menus %}
+            <li>{{ menu.restaurant }}</li>
+            <ul>
+                {% for item in menu.menus %}
+                        <li>{{ item.date }} : {{ item.menu }}</li>
+                {% endfor %}
+            </ul>
+    {% endfor %}
+</ul>
+{% endif %}
