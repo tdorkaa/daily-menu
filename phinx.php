@@ -1,7 +1,10 @@
 <?php
 $pdo = new PDO('mysql:host=mysql;charset=utf8mb4', 'academy', 'academy');
-$pdo->query("CREATE DATABASE IF NOT EXISTS dailymenu");
-$pdo->query("CREATE DATABASE IF NOT EXISTS dailymenu_test");
+
+if(getenv('APPLICATION_ENV')) {
+    $pdo->query("CREATE DATABASE IF NOT EXISTS dailymenu");
+    $pdo->query("CREATE DATABASE IF NOT EXISTS dailymenu_test");
+}
 
 return
     [
@@ -14,10 +17,10 @@ return
             'default_database' => 'development',
             'development' => [
                 'adapter' => 'mysql',
-                'host' => 'mysql',
-                'name' => 'dailymenu',
-                'user' => 'academy',
-                'pass' => 'academy',
+                'host' => getenv('HOST'),
+                'name' => getenv('DB_NAME'),
+                'user' => getenv('DB_USER'),
+                'pass' => getenv('DB_PASSWORD'),
                 'port' => '3306',
                 'charset' => 'utf8',
             ],
