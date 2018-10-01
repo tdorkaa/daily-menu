@@ -10,10 +10,13 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $envLoader = new EnvLoader();
 $envLoader->loadEnvVars();
+$date = date('H:i:s');
 
-$dailyMenuJob = new DailyMenuJob(
-    new DailyMenuDao((new PdoFactory())->getPdo()),
-    ParserMapper::getParserMap(),
-    (new \DailyMenu\LoggerFactory())->build()
-);
-$dailyMenuJob->run();
+if($date < '12:00:00') {
+    $dailyMenuJob = new DailyMenuJob(
+        new DailyMenuDao((new PdoFactory())->getPdo()),
+        ParserMapper::getParserMap(),
+        (new \DailyMenu\LoggerFactory())->build()
+    );
+    $dailyMenuJob->run();
+}
