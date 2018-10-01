@@ -21,10 +21,14 @@ class Restaurants extends AbstractSeed
             ],
             [
                 'name' => 'Muzikum Klub & Bistro',
+            ],
+            [
+                'name' => 'Cafe Intenso',
             ]
         ];
 
         $posts = $this->table('restaurants');
+        $posts->truncate();
         $posts
             ->insert($data)
             ->save();
