@@ -15,5 +15,13 @@
             "DailyMenu\\": "src/",
             "Tests\\": "tests/"
         }
+    },
+    "scripts": {
+        "migrate": "vendor/bin/phinx migrate -e development",
+        "seed": "vendor/bin/phinx seed:run -e development",
+        "post-install-cmd": [
+            "@migrate",
+            "@seed"
+        ]
     }
 }
