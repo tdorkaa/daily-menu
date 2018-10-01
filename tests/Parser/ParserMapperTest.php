@@ -2,6 +2,7 @@
 
 namespace Tests\Parser;
 
+use DailyMenu\Parser\CafeIntensoParser;
 use DailyMenu\Parser\MuzikumParser;
 use DailyMenu\Parser\ParserMapper;
 use DailyMenu\Parser\VendiakParser;
@@ -16,7 +17,8 @@ class ParserMapperTest extends TestCase
     {
         $expected = [
             'Véndiák Cafe Lounge' => VendiakParser::class,
-            'Muzikum Klub & Bistro' => MuzikumParser::class
+            'Muzikum Klub & Bistro' => MuzikumParser::class,
+            'Cafe Intenso' => CafeIntensoParser::class
         ];
         $actual = ParserMapper::getParserMap();
         $this->assertEquals($expected, $actual);
