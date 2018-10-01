@@ -1,5 +1,15 @@
 <?php
-$pdo = new PDO('mysql:host=mysql;charset=utf8mb4', 'academy', 'academy');
+
+use DailyMenu\EnvLoader;
+require_once __DIR__ . '/vendor/autoload.php';
+
+$envLoader = new EnvLoader();
+$envLoader->loadEnvVars();
+$host = getenv('HOST');
+$user_name = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+
+$pdo = new PDO("mysql:host={$host};charset=utf8mb4", $user_name, $password);
 
 if(getenv('APPLICATION_ENV')) {
     $pdo->query("CREATE DATABASE IF NOT EXISTS dailymenu");
