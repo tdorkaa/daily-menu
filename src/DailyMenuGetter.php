@@ -6,7 +6,7 @@ use DailyMenu\Job\DailyMenu as DailyMenuJob;
 use DailyMenu\Parser\ParserMapper;
 use DailyMenu\PdoFactory;
 
-require '../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $envLoader = new EnvLoader();
 $envLoader->loadEnvVars();
