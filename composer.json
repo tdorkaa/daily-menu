@@ -1,5 +1,6 @@
 {
     "require": {
+        "php": "^7.1",
         "slim/slim": "^3.10",
         "robmorgan/phinx": "^0.10.6",
         "vlucas/phpdotenv": "^2.5",
